@@ -1,8 +1,9 @@
-import React, { useState }  from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 import { v4 as uuid } from 'uuid'
-
+import Form from 'team-builder\src\Form.js'
+import React, {useState} from 'react'
+import TeamMember from './TeamMember'
 const initialTeamMemberList = [
   {
     id: uuid(), 
@@ -24,27 +25,45 @@ const initialTeamMemberList = [
 
 
   function App() {
-    const [teams, setTeams] = useState(initialTeamMemberList)
+    const [TeamMembers, setTeamMembers] = useState(initialTeamMemberList)
      const [formValues, setFormValues] = useState(initialFormValues)
+     
+     
+     
+     const updateForm = (inputName, inputValue) => { 
+      setFormValues({ ...formValues, [inputName]: inputValue })
+    };
+ 
+    const submitForm = () => {
+      const teamMember = {
+        name: formValues.name.trim(),
+        email: formValues.email.trim(),
+        role: formValues.role,
+      }
+      setTeamMembers([...TeamMember, TeamMember])
+    }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+ 
+    return(
+      <div className='container'>
+      <header><h1>Team Builder</h1></header>
+      <Form
+        values={formValues}
+        update={updateForm}
+        submit={submitForm}
+      />
+      {TeamMember.map(TeamMember=> {
+          return (
+            <TeamMember key={TeamMember.id} details={TeamMember} />
+          )
+        })
+      }
     </div>
-  );
-}
+    )
+    }
+   
+   
+  
+     
 
 export default App;
